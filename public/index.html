@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Scraping With Mongoose</title>
+
+    <!-- materializecss -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/css/materialize.min.css">
+    
+    <!-- icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- my css -->
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
+
+  </head>
+  <body>
+    <nav>
+      <div class="nav-wrapper">
+        <a class="brand-logo">Mongo Scraper</a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+          <li><a class="waves-effect waves-light btn"><i class="material-icons right small">blur_linear</i>Scrape</a></li>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Saved</a></li>
+        </ul>
+      </div>
+    </nav>
+    
+    <div class="parallax-container">SCRAPING WITH MONGO
+      <div class="parallax"><img src="http://www.isaussm.com/Newspapers.jpg"></div>
+    </div>
+
+    <div class="articleList">
+      <div class="noArticles">
+        No Articles To View :(
+      </div>
+    </div>
+
+    <div id="wrapper">
+      <h1>Note Scraper</h1>
+      <h2><i>If you can do this...the homework should be no problem.</i></h2>
+      <div id="articles"></div>
+      <div id="notes"></div>
+    </div>
+    
+    <!-- jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <!-- Compiled and minified JavaScript for Materialize -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
+
+    <!-- own js -->
+    <script src="app.js"></script>
+  </body>
+</html>
