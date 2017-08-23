@@ -6,7 +6,7 @@ var cheerio = require("cheerio");
 module.exports = function(app){
   app.get("/scrape", function(req, res) {
     request("https://www.nytimes.com/", function(error, response, html) {
-      
+      console.log(response)
       var $ = cheerio.load(html);
       $("article h2").each(function(i, element) {
 
@@ -28,6 +28,7 @@ module.exports = function(app){
 
       });
     });
+    
     res.send("Scrape Complete");
   });
 
@@ -59,23 +60,61 @@ module.exports = function(app){
       });
   });
 
-  app.post("/articles/:id", function(req, res) {
+  // app.post("/articles/:id", function(req, res) {
 
-    var newNote = new Note(req.body);
-    newNote.save(function(err, doc){
-      if (err){
-        console.log(err)
-      } else {
+  //   var newNote = new Note(req.body);
+  //   newNote.save(function(err, doc){
+  //     if (err){
+  //       console.log(err)
+  //     } else {
         
-        Article.findOneAndUpdate({_id:req.params.id}, { "note": doc._id }, function(error, doc) {
+  //       Article.findOneAndUpdate({_id:req.params.id}, { "note": doc._id }, function(error, doc) {
+  //         if (error) {
+  //           res.send(error);
+  //         }
+  //         else {
+  //           res.send(doc);
+  //         }
+  //       });
+  //     }
+  //   })
+  // });
+
+  app.get("/saved", function(req, res) {
+
+    Article.find({saved:true}, function(error, doc) {
+      if (error) {
+        res.send(error);
+      }
+      else {
+        res.send(doc);
+      }
+    });
+
+  });
+
+  app.post("/articles/:id", function(req, res) {
+    Article.findOneAndUpdate({_id:req.params.id}, {$set:{"saved":true}}, function(error, doc) {
           if (error) {
             res.send(error);
           }
           else {
             res.send(doc);
           }
-        });
-      }
-    })
+    });
   });
+
+  app.get("/remove", function(req, res) {
+
+    Article.remove({}, function(error, doc) {
+      if (error) {
+        res.send(error);
+      }
+      else {
+        res.send(doc);
+      }
+    });
+
+  });
+
 }

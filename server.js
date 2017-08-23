@@ -12,7 +12,7 @@ app.use(bodyParser.urlencoded({
 
 app.use(express.static("public"));
 
-mongoose.connect("mongodb://localhost/week18day3mongoose");
+mongoose.connect("mongodb://localhost/mongooseScraping");
 var db = mongoose.connection;
 
 db.on("error", function(error) {
