@@ -19,7 +19,7 @@ $.getJSON("/saved", function(data) {
         $(".cc"+i).append("<p>" + data[i].link + "</p>")
         $(".card"+i).append("<div class='card-action action"+i+"'>")
         $(".action"+i).append("<a class='waves-effect waves-light btn red deleteArt' data-id=" + data[i]._id + ">Delete From Saved</a>")
-        $(".action"+i).append("<a class='waves-effect waves-light btn notes' data-id=" + data[i]._id + ">Notes</a>")
+        $(".action"+i).append("<a class='waves-effect waves-light btn  modal-trigger notes' href='#modal2' data-id=" + data[i]._id + ">Notes</a>")
       }
     }
 });
@@ -36,8 +36,46 @@ $(document).on("click", ".deleteArt", function() {
     url: "/remove/" + thisId,
   })
     .done(function(data) {
-      console.log(data);
+      location.reload()
     });
 
-    location.reload()
+    
+});
+
+$(document).on("click", ".notes", function() {
+  
+  var thisId = $(this).attr("data-id");
+  console.log(thisId)
+  $(".savenote").attr("data-id", thisId)
+
+  $.ajax({
+    method: "get",
+    url: "/saved/" + thisId,
+  })
+    .done(function(data) {
+      $(".noteTitle").text(data[0].title)
+      
+      console.log(data);
+    });
+});
+
+
+
+
+$(document).on("click", ".savenote", function() {
+
+  var thisId = $(this).attr("data-id");
+  console.log(thisId)
+
+  $.ajax({
+    method: "POST",
+    url: "/submit/" + thisId,
+    data: {
+      body: $("#bodyinput").val()
+    }
+  })
+    .done(function(data) {
+      console.log(data)
+      $("#bodyinput").val("");
+    });
 });
