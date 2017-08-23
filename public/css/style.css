@@ -4,7 +4,7 @@
 
 .parallax-container {
 	font-size: 100px;
-	text-shadow: 0 0 5px black;
+	text-shadow: 0 0 10px black;
 	color: white;
 }
 
@@ -12,6 +12,7 @@
 	width: 100%;
 	padding: 5px;
 }
+
 .noArticles {
 	margin: 20px;
 	border-radius: 20px 20px;
@@ -21,4 +22,8 @@
 	font-size: 60px;
 	text-align: center;
 	padding: 20px;
+}
+
+.deleteArt {
+	margin-right: 5px;
 }

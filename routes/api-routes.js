@@ -104,6 +104,17 @@ module.exports = function(app){
     });
   });
 
+  app.post("/remove/:id", function(req, res) {
+    Article.remove({_id:req.params.id}, function(error, doc) {
+          if (error) {
+            res.send(error);
+          }
+          else {
+            res.send(doc);
+          }
+    });
+  });
+
   app.get("/remove", function(req, res) {
 
     Article.remove({}, function(error, doc) {

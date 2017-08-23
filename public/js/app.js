@@ -1,6 +1,9 @@
 $(document).ready(function(){
   $('.parallax').parallax();
   $('.modal').modal();
+
+  
+
 });
 
 $.getJSON("/articles", function(data) {
@@ -10,7 +13,7 @@ $.getJSON("/articles", function(data) {
     }
 
     for (var i = 0; i < data.length; i++) {
-      if (data[i].saved == true){
+      if (data[i].saved == false){
         $(".articleList").append("<div class='row row"+i+"'>")
         $(".row"+i).append("<div class='col s12 m12 col"+i+"'>")
         $(".col"+i).append("<div class='card blue-grey darken-1 card"+i+"'>")
@@ -21,6 +24,53 @@ $.getJSON("/articles", function(data) {
         $(".action"+i).append("<a class='waves-effect waves-light btn save' data-id=" + data[i]._id + ">Save</a>")
       }
     }
+  });
+
+
+// ---------------------------------------------------------------------
+$(".scraper").on("click", function() {
+  $.ajax({
+    method: "GET",
+    url: "/scrape"
+  })
+    .done(function(data) {
+
+      $(".noArticles").remove()
+      $(".resNo").text(data.length+" articles scraped. :)")
+      console.log(data);
+    });
+
+})
+
+$(".removeAll").on("click", function() {
+  $.ajax({
+    method: "GET",
+    url: "/remove"
+  })
+    .done(function(data) {
+
+      console.log(data);
+    });
+
+})
+
+
+$(document).on("click", ".save", function() {
+  
+  var thisId = $(this).attr("data-id");
+  console.log(thisId)
+
+  $.ajax({
+    method: "POST",
+    url: "/articles/" + thisId,
+  })
+    .done(function(data) {
+      console.log(data);
+    });
+
+  location.reload()
 });
 
-//-----------------------------------------------
+$(document).on("click", ".modal-action", function() {
+  location.reload()
+});
