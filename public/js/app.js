@@ -36,7 +36,7 @@ $(".scraper").on("click", function() {
     .done(function(data) {
 
       $(".noArticles").remove()
-      $(".resNo").text(data.length+" articles scraped. :)")
+      $(".resNo").text("New York Times has been scraped. :)")
       console.log(data);
     });
 
@@ -50,6 +50,7 @@ $(".removeAll").on("click", function() {
     .done(function(data) {
 
       console.log(data);
+      location.reload()
     });
 
 })

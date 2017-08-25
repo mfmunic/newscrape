@@ -6,10 +6,9 @@ var cheerio = require("cheerio");
 module.exports = function(app){
   app.get("/scrape", function(req, res) {
     request("https://www.nytimes.com/", function(error, response, html) {
-      console.log(response)
+      
       var $ = cheerio.load(html);
       $("article h2").each(function(i, element) {
-
         var result = {};
 
         result.title = $(this).children("a").text();
@@ -17,19 +16,23 @@ module.exports = function(app){
 
         var entry = new Article(result);
 
-        entry.save(function(err, doc) {
-          if (err) {
-            console.log(err);
-          }
-          else {
-            console.log(doc);
+        Article.find({ title:result.title }, function(error, found){
+          if (error) {
+            console.log(entry);
+          } else {
+            console.log(found)
+            if (found.length === 0){
+              entry.save(function(err, doc) {
+                if (err) {
+                  console.log(err);
+                }
+              });
+            }
           }
         });
-
       });
-    });
-    
     res.send("Scrape Complete");
+    });
   });
 
 
@@ -54,7 +57,7 @@ module.exports = function(app){
         console.log(err)
       } else {
         
-        Article.findOneAndUpdate({_id:req.params.id}, { "note": doc._id }, { new: true }, function(error, doc) {
+        Article.findOneAndUpdate({_id:req.params.id}, { $push: { "note": doc._id } }, {new: true}, function(error, doc) {
           if (error) {
             res.send(error);
           }
@@ -81,24 +84,16 @@ module.exports = function(app){
 
   app.get("/saved/:id", function(req, res) {
 
-    Article.find({_id:req.params.id}, function(error, doc) {
-      if (error) {
-        res.send(error);
-      }
-      else {
-        res.send(doc);
-      }
-    })
-      // .populate("note")
-      // .exec(function(error, doc) {
-      //   if (error) {
-      //     res.send(error);
-      //   }
-      //   else {
-      //     res.send(doc);
-      //   }
-      // });
-
+    Article.find({_id:req.params.id})
+      .populate("note")
+      .exec(function(error, doc) {
+        if (error) {
+          res.send(error);
+        }
+        else {
+          res.send(doc);
+        }
+      });
   });
 
   app.post("/articles/:id", function(req, res) {
@@ -134,6 +129,31 @@ module.exports = function(app){
       }
     });
 
+  });
+
+  app.get("/notes", function(req, res) {
+
+    Note.find({}, function(error, doc) {
+      if (error) {
+        res.send(error);
+      }
+      else {
+        res.send(doc);
+      }
+    });
+
+  });
+
+  app.post("/notes/:id", function(req, res) {
+
+    Note.deleteOne({_id:req.params.id}, function(error, doc){
+        if (error) {
+          res.send(error);
+        }
+        else {
+          res.send(doc);
+        }
+      });
   });
 
 }
